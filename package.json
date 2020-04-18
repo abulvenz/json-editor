@@ -1,0 +1,24 @@
+{
+  "name": "json-editor",
+  "version": "1.0.0",
+  "description": "A webcomponent for editing json objects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ospec test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abulvenz/json-editor.git"
+  },
+  "keywords": [
+    "webcomponents",
+    "JSON",
+    "editor"
+  ],
+  "author": "Andi Eismann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abulvenz/json-editor/issues"
+  },
+  "homepage": "https://github.com/abulvenz/json-editor#readme"
+}
