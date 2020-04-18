@@ -1,3 +1,6 @@
+import m from 'mithril';
+import { div, button, br, pre } from './tags';
+
 const view = Object.freeze({
     json: 'Json',
     edit: 'Edit',
@@ -7,11 +10,48 @@ const view = Object.freeze({
 const use = (v, fn) => fn(v);
 const when = (v, fn, or = undefined) => v ? fn(v) : or;
 
+const addProp = vnode => {
+    return {
+        view: vnode => [
+            button('Number'),
+            button('Boolean'),
+            button('String'),
+            button('Object'),
+            button('Array')
+        ]
+    }
+}
+
+const editor = vnode => {
+    let selectedView = view.json;
+    return {
+        view({ attrs: { state, showToolbar = true } }) {
+            return div.wrapper([
+                showToolbar ? [
+                    button.toolbar({ disabled: selectedView === view.edit, onclick: e => { selectedView = view.edit; } }, view.edit),
+                    button.toolbar({ disabled: selectedView === view.json, onclick: e => { selectedView = view.json; } }, view.json),
+                    br(),
+                ] : null,
+                when(
+                    selectedView === view.json,
+                    () => pre(JSON.stringify(state.object, null, 2)),
+                    null
+                ),
+                when(
+                    selectedView === view.edit,
+                    () => m(addProp),
+                    null
+                )
+            ]);
+        }
+    }
+}
+
+
 class JsonEditor extends HTMLElement {
 
     constructor() {
         super()
-        console.log('Hello world')
         this.root = this.attachShadow({
             mode: "open"
         });
@@ -22,26 +62,29 @@ class JsonEditor extends HTMLElement {
 
         this.view = view.json;
 
-        const wrapper = this.wrapper = document.createElement('div');
-        wrapper.className = 'wrapper';
-        this.root.appendChild(wrapper);
-
         this.styleElement = document.createElement('style');
         this.root.appendChild(this.styleElement);
 
         this.updateStyle();
+
+        this.wrapper = document.createElement('div');
+
+        m.mount(this.wrapper, {
+            view: vnode => {
+                return m(editor, { state: this.state, onsave: o => this.onsave(o) });
+            }
+        });
+
+        this.root.appendChild(this.wrapper);
+
     }
 
     connectedCallback() {
-
-        this.render();
         this.object = when(
             this.getAttribute('data-initial'),
             v => JSON.parse(v.replace(/\'/ig, '"')),
             this.object
         );
-
-        console.log(this.object)
 
         console.log('Json Editor added to page.');
         this.updateStyle(this);
@@ -78,44 +121,14 @@ class JsonEditor extends HTMLElement {
               padding:15px;
               border-radius:10px;
             }
+            button {
+              background-color: #aaaaff;
+              border: none;
+              margin: 4px;
+              padding: 3px 6px;
+              border-radius:10px;
+            }
           `;
-    // this.object = {};
-  }
-
-
-  render() {
-    this.updateStyle();
-    console.log('rendering');
-    this.wrapper.innerHTML = `
-    <div>
-      <button id="json" ${this.view === view.json ? 'disabled' : ''}>${view.json}</button>
-      <button id="edit" ${this.view === view.edit ? 'disabled' : ''}>${view.edit}</button>
-      ${this.view === view.edit ? `<button id="save">${view.save}</button>` : ''}      
-      <br />
-      ${
-      this.view === view.json ? `
-        <pre>${JSON.stringify(this.object, null, 2)}</pre>
-  `: ``
-      }
-    </div> 
-  `;
-    console.log('Adding eventlisteners')
-    this.root.querySelector('#json').addEventListener('click', e => {
-      this.view = view.json;
-      this.render();
-    });
-
-    this.root.querySelector('#edit').addEventListener('click', e => {
-      this.view = view.edit;
-      this.render();
-    });
-
-    if (this.root.querySelector('#save'))
-      this.root.querySelector('#save').addEventListener('click', e => {
-        this.view = view.json;
-        this.render();
-        this.onsave();
-      });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -125,7 +138,6 @@ class JsonEditor extends HTMLElement {
       this.object
     );
     console.log('json-editor element attributes changed.');
-    this.render();
   }
 }
 

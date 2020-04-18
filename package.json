@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/abulvenz/json-editor/issues"
   },
-  "homepage": "https://github.com/abulvenz/json-editor#readme"
+  "homepage": "https://github.com/abulvenz/json-editor#readme",
+  "dependencies": {
+    "mithril": "^2.0.4",
+    "tagl-mithril": "^1.2.2"
+  }
 }
