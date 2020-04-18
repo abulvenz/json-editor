@@ -61,7 +61,13 @@ class JsonEditor extends HTMLElement {
     }
 
     onsave() {
-        this.getAttribute('onsave');
+        const ev = new CustomEvent('save', { object: this.object });
+        ev.target = this;
+        this.dispatchEvent(ev);
+    }
+
+    get value() {
+        return this.object;
     }
 
     updateStyle() {
@@ -73,7 +79,7 @@ class JsonEditor extends HTMLElement {
               border-radius:10px;
             }
           `;
-    this.object = {};
+    // this.object = {};
   }
 
 
@@ -89,7 +95,7 @@ class JsonEditor extends HTMLElement {
       ${
       this.view === view.json ? `
         <pre>${JSON.stringify(this.object, null, 2)}</pre>
-  `: ''
+  `: ``
       }
     </div> 
   `;
@@ -98,10 +104,12 @@ class JsonEditor extends HTMLElement {
       this.view = view.json;
       this.render();
     });
+
     this.root.querySelector('#edit').addEventListener('click', e => {
       this.view = view.edit;
       this.render();
     });
+
     if (this.root.querySelector('#save'))
       this.root.querySelector('#save').addEventListener('click', e => {
         this.view = view.json;
@@ -121,24 +129,4 @@ class JsonEditor extends HTMLElement {
   }
 }
 
-class JsonObjectEditor extends HTMLElement {
-
-  connectedCallback() {
-    console.log('Json Object Editor added to page.');
-  }
-
-  disconnectedCallback() {
-    console.log('Json Object Editor removed from page.');
-  }
-
-  adoptedCallback() {
-    console.log('Json Object Editor moved to new page.');
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log('Json Object Editor attributes changed.');
-  }
-}
-
-customElements.define("json-object", JsonObjectEditor);
 customElements.define("json-editor", JsonEditor);

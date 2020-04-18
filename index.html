@@ -6,17 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Development view</title>
     <script src="index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.003/web/hack.min.css">
+    <style>
+        body {
+            font-family: Hack
+        }
+        
+        div.code {
+            background-color: aquamarine;
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Welcome the new JSON editor web component</h1>
     <p>
         You can just use it as any other HTML element.<br><br>
-        <code>
+        <div class="code">
+            <code>
         &lt;json-editor data-initial="{'a':2}" onsave=""&gt;&lt;/json-editor&gt;
+        <br>
+        &lt;script src="https://ghcdn.rawgit.org/abulvenz/json-editor/1.0.0/index.js"&gt;&lt;/script&gt;
+    </div>
     </code><br><br>
     </p>
-    <json-editor data-initial="{'a':2}" onsave=""></json-editor>
+    <json-editor id="editor" data-initial="{'a':2}" onsave="onsave"></json-editor>
+    <script>
+        document.getElementById('editor')
+            .addEventListener('save', ev => alert('saved ' + JSON.stringify(ev.target.object)))
+    </script>
 </body>
 
 </html>
