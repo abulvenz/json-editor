@@ -1,6 +1,6 @@
 {
   "name": "json-editor-webcomponent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A webcomponent for editing json objects.",
   "main": "index.js",
   "scripts": {
