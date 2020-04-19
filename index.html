@@ -22,19 +22,31 @@
 <body>
     <h1>Welcome the new JSON editor web component</h1>
     <p>
-        You can just use it as any other HTML element.<br><br>
+        You can just use it as any other HTML element.<br>
         <div class="code">
             <code>
         &lt;json-editor data-initial="{'a':2}" onsave=""&gt;&lt;/json-editor&gt;
         <br>
         &lt;script src="https://ghcdn.rawgit.org/abulvenz/json-editor/1.0.0/index.js"&gt;&lt;/script&gt;
-    </div>
-    </code><br><br>
+    </code>
+        </div>
+
     </p>
-    <json-editor id="editor" data-initial="{'a':2}" onsave="onsave"></json-editor>
+    <!--    <json-editor show-controls id="editor" data-initial="{'name':'json-editor-webcomponent','version':'1.0.1','description':'Awebcomponentforeditingjsonobjects.','main':'index.js','scripts':{'test':'ospectest.js'},'repository':{'type':'git','url':'git+https://github.com/abulvenz/json-editor.git'},'keywords':['webcomponents','JSON','editor'],'author':'AndiEismann','license':'MIT','bugs':{'url':'https://github.com/abulvenz/json-editor/issues'},'homepage':'https://github.com/abulvenz/json-editor#readme','dependencies':{'mithril':{'first':'^2.0.4'},'tagl-mithril':'^1.2.2'}}"
+        onsave="onsave">
+    </json-editor>
+    <br>-->
+    <!--<json-editor id="editor" data-initial="{'name':'json-editor-webcomponent','version':'1.0.1','description':'A webcomponent for editing json objects.','main':'index.js','scripts':{'test':'ospectest.js'},'repository':{'type':'git','url':'git+https://github.com/abulvenz/json-editor.git'},'keywords':['webcomponents','JSON','editor'],'author':'Andi Eismann','license':'MIT','bugs':{'url':'https://github.com/abulvenz/json-editor/issues'},'homepage':'https://github.com/abulvenz/json-editor#readme','dependencies':{'mithril':'^2.0.4','tagl-mithril':'^1.2.2'}}"
+        onsave="onsave">
+    </json-editor>-->
+    <json-editor show-controls id="editor" data-url="https://conduit.productionready.io/api/articles/">
+    </json-editor>
     <script>
         document.getElementById('editor')
-            .addEventListener('save', ev => alert('saved ' + JSON.stringify(ev.target.object)))
+            .addEventListener('save', ev => {
+                console.log(ev.target)
+                alert('saved ' + JSON.stringify(ev.target.object));
+            })
     </script>
 </body>
 
